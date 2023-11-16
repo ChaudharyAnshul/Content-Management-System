@@ -1,0 +1,50 @@
+1. User
+	Id
+	Name
+	Age
+	Address
+	email
+	password - encrypt
+	isAdmin
+	isTeacher
+	isStudent
+	
+
+2. Course
+	Id
+	Name
+	Number
+	MaxCountStudent
+	CurrentCountStudent
+	
+
+3. CourseStudentMap
+	Id
+	StudentId
+	CouseId
+
+
+4. CourseTeacherMap
+	Id
+	UserID
+	CourseId
+
+
+7. Quiz
+	ID
+	Name
+	CourseID
+
+6. QuizQuestion
+	Id
+	QuizID
+	Question
+	QuestionType
+	Answer
+		
+
+6. QuizOptions
+	Id
+	QuizQuestionId
+	OptionName
+
