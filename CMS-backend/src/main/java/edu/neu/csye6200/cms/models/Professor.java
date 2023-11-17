@@ -1,7 +1,9 @@
 package edu.neu.csye6200.cms.models;
 
+import edu.neu.csye6200.cms.enums.UserRole;
+
 public class Professor extends User{
-    public Professor(String fName,String lName,String email,String password) {
-        super(fName, lName, email, password, true, false, false, true);
+    public Professor(String firstName, String lastName, String email, String password) throws Exception {
+        super(firstName, lastName, email, password, true, UserRole.PROFESSOR);
     }
 }

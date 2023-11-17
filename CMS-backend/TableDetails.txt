@@ -14,6 +14,8 @@
 	Id
 	Name
 	Number
+	professor - FK
+	listStudents - list Fk
 	MaxCountStudent
 	CurrentCountStudent
 	
@@ -34,17 +36,14 @@
 	ID
 	Name
 	CourseID
+	studentScore - list Map<String, Double>
 
 6. QuizQuestion
 	Id
 	QuizID
 	Question
 	QuestionType
-	Answer
-		
-
-6. QuizOptions
-	Id
-	QuizQuestionId
-	OptionName
+	QuizOptions - list of options
+	CorrectAnswer
+	StudentResponse - list Map<String, String>
 
