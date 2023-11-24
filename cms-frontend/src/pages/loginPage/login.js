@@ -4,24 +4,34 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { loginRequest } from '../../request/userRequest'
+import { useNavigate  } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export const LoginIn = ({handleOpenErrorModal}) => {
+export const LoginIn = ( { handleOpenErrorModal } ) => {
+
+  const navigate = useNavigate ();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const loginValues = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+    }
+    const loginSuccess = loginRequest(loginValues, handleOpenErrorModal);
+    if(loginSuccess){
+      navigate("/dashboard")
+    }
   };
 
   return (
@@ -71,13 +81,13 @@ export const LoginIn = ({handleOpenErrorModal}) => {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item>
-                <Button >
-                  {"Don't have an account? Sign Up"}
-                </Button>
-              </Grid>
-            </Grid>
+            <Grid container justifyContent="flex-end">
+                <Grid item>
+                    <Link href="/signup" variant="body2">
+                    create new account? Sign up
+                    </Link>
+                </Grid>
+                </Grid>
           </Box>
         </Box>
       </Container>

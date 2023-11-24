@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { LoginIn } from './loginPage/login';
-import {ErrorModal} from './error/errorModal'
+import { ErrorModal}  from './pages/errorPage/errorModal';
+import { AppRouter } from './router/router'
 
 export const App = () => {
 
@@ -16,7 +16,7 @@ export const App = () => {
 
   return (
     <div className="App">
-      <LoginIn handleOpenErrorModal={handleOpenErrorModal} />
+      <AppRouter handleOpenErrorModal={handleOpenErrorModal}/>
       
       <ErrorModal
         open={!!error}
