@@ -1,5 +1,6 @@
 package edu.neu.csye6200.cms.controller;
 
+import edu.neu.csye6200.cms.factory.UserFactory;
 import edu.neu.csye6200.cms.models.User;
 import edu.neu.csye6200.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class UserController {
     @PostMapping ("/register")
     public ResponseEntity<String> register(@RequestBody Map<String,String> payload){
         try{
-            User student = userService.CreateStudent(payload.get("firstName"), payload.get("lastName"), payload.get("email"), payload.get("password"));
-            String msg = "New Student Created with email " + student.getEmail();
+            User user = UserFactory.valueOf(payload.get("role")).createUser(userService,payload.get("firstName"), payload.get("lastName"), payload.get("email"), payload.get("password"));
+            String msg = "New "+payload.get("role")+" Created with email " + user.getEmail();
             return new ResponseEntity<>(msg, HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -1,6 +1,7 @@
 package edu.neu.csye6200.cms.service;
 
 import edu.neu.csye6200.cms.models.Admin;
+import edu.neu.csye6200.cms.models.Professor;
 import edu.neu.csye6200.cms.models.Student;
 import edu.neu.csye6200.cms.models.User;
 import edu.neu.csye6200.cms.repository.UserRepository;
@@ -33,6 +34,11 @@ public class UserService {
         User student = new Student(fName, lName, email, password);
         userRepository.save(student);
         return student;
+    }
+    public User CreateProfessor(String fName, String lName, String email, String password) throws Exception{
+        User professor = new Professor(fName, lName, email, password);
+        userRepository.save(professor);
+        return professor;
     }
 
     public User CheckUserLogin(String email, String password) throws Exception{
