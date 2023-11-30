@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,16 +12,18 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { loginRequest } from '../../request/userRequest'
-import { useNavigate  } from 'react-router-dom';
-
+import { Navigate, useLocation  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../context/AuthProvider';
+import {loginRequestDemo} from "../../request/userRequestDemo";
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export const LoginIn = ( { handleOpenErrorModal } ) => {
-
-  const navigate = useNavigate ();
-
+  const { setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -28,10 +31,19 @@ export const LoginIn = ( { handleOpenErrorModal } ) => {
       email: data.get('email'),
       password: data.get('password'),
     }
-    const loginSuccess = loginRequest(loginValues, handleOpenErrorModal);
-    if(loginSuccess){
-      navigate("/dashboard")
-    }
+    const loginSuccess = loginRequestDemo(loginValues);
+    
+    loginSuccess.then((res)=>{
+      setAuth({email:res.email,firstName:res.firstName,userRole:res.userRole});
+      navigate('/dashboard');
+      // <Navigate to="/dashboard" state={{from:location}} replace/>
+    }).catch(err=>{
+      console.log(err);
+    })
+   
+    // if(loginSuccess){
+    //   navigate("/dashboard")
+    // }
   };
 
   return (
