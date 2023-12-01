@@ -10,21 +10,18 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PersonIcon from "@mui/icons-material/Person";
 import { mainListItems, secondaryListItems } from "./listItems";
-import { Chart } from "./chart";
-import { Deposits } from "./deposits";
-import { Orders } from "./orders";
+
 import { clearDataFromLocalStorage } from "../../util/cache";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { Card, CardMedia, CardContent, Typography } from '@mui/material';
-
+import { Typography } from "@mui/material";
+import { cards } from "../../json/sampleData";
+import CourseCard from "../../components/CourseCard";
+import { Grid } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -196,28 +193,13 @@ export const Dashboard = () => {
           }}
         >
           <Toolbar />
-          <Card sx={{ maxWidth: 345 }}>
-            <CardMedia
-              component="img"
-              alt="Northeastern University Graduate School of Engineering"
-              height="140"
-              image=""
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                Northeastern University
-              </Typography>
-              <Typography gutterBottom variant="h6" component="div">
-                Graduate School of Engineering
-              </Typography>
-              <Typography gutterBottom variant="body2" component="div">
-                COE Graduate Student Services O...
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                COE.GSSO.2324
-              </Typography>
-            </CardContent>
-          </Card>
+          <Grid container spacing={2}>
+            {cards.map((card) => (
+              <Grid item xs={12} md={6} lg={4} key={card.id}>
+                <CourseCard key={card.id} card={card} />
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Box>
     </ThemeProvider>
