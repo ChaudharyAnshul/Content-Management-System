@@ -5,6 +5,11 @@
 2. React
 3. Mongo DB
 
+## IDLE/Editors
+1. Intellij
+2. VS Code
+3. Mongo Compass
+
 ##  Repo Setup
 Backend Setup (Spring-Boot app)
 1. Clone the repo
