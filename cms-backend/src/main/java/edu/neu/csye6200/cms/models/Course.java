@@ -29,4 +29,14 @@ public class Course {
     private List<Student> students;
     private int maxCount;
     private int currentCount;
+
+    public Course(String name, int number, Term term, Professor professor, List<Student> students, int maxCount, int currentCount) {
+        this.name = name;
+        this.number = number;
+        this.term = term;
+        this.professor = professor;
+        this.students = students;
+        this.maxCount = maxCount;
+        this.currentCount = currentCount;
+    }
 }

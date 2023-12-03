@@ -20,4 +20,9 @@ public class Term {
     @Indexed(unique = true)
     private String termName;
     private TermType termType;
+
+    public Term(String termName, TermType termType) {
+        this.termName = termName;
+        this.termType = termType;
+    }
 }

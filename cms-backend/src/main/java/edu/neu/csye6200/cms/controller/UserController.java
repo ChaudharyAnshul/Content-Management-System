@@ -1,5 +1,6 @@
 package edu.neu.csye6200.cms.controller;
 
+import edu.neu.csye6200.cms.Utilities.FileReaderUtility;
 import edu.neu.csye6200.cms.models.User;
 import edu.neu.csye6200.cms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -29,6 +31,13 @@ public class UserController {
     public ResponseEntity<Optional<User>> login(@RequestBody Map<String,String> payload){
         try{
             User user = userService.CheckUserLogin(payload.get("email"), payload.get("password"));
+            List<List<User>> listContainer = new ArrayList<List<User>>();
+            FileReaderUtility objFileReader = new FileReaderUtility();
+            listContainer = objFileReader.ReadFile();
+            for(User obj : listContainer.get(0))
+            {
+                System.out.println("obj fname - "+ obj.getFirstName());
+            }
             return new ResponseEntity<>(Optional.ofNullable(user), HttpStatus.OK);
         } catch(Exception e){
             return new ResponseEntity<>(Optional.empty(), HttpStatus.BAD_REQUEST);
