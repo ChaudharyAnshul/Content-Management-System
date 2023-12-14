@@ -1,4 +1,4 @@
-import * as React from "react";
+import *  as React  from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -22,6 +22,9 @@ import { Typography } from "@mui/material";
 import { cards } from "../../json/sampleData";
 import CourseCard from "../../components/CourseCard";
 import { Grid } from "@mui/material";
+import { useEffect } from 'react';
+import "./dashboard.js";
+import { getQuiz } from "../../request/courseRequest1.js";
 
 const drawerWidth = 240;
 
@@ -43,44 +46,29 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  "& .MuiDrawer-paper": {
-    position: "relative",
-    whiteSpace: "nowrap",
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    boxSizing: "border-box",
-    ...(!open && {
-      overflowX: "hidden",
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
-      },
-    }),
-  },
-}));
-
 const defaultTheme = createTheme();
 
 export const Dashboard = () => {
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+
+  const { auth: user, setAuth } = useAuth();
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [card, setCard] = React.useState();
 
-  const toggleDrawer = () => {
-    setOpen(!open);
+  useEffect(() => {
+    const fetchData = async () => {
+      const a = await getQuiz();
+      setCard(a);
+    };
+    fetchData();
+  }, [card]);
+
+  const handleLogout = () => {
+    clearDataFromLocalStorage();
+    setAuth({});
+    navigate("/login");
   };
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -88,120 +76,95 @@ export const Dashboard = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleLogout = () => {
-    clearDataFromLocalStorage();
-    setAuth({});
-    navigate("/login");
-  };
-  const cardStyle = {
-    width: 200,
-    height: 200,
-  };
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: "24px", // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
+  if (card !== undefined){
+    return (
+      <ThemeProvider theme={defaultTheme}>
+        <Box sx={{ display: "flex"}}>
+          <CssBaseline />
+          <AppBar position="absolute">
+            <Toolbar
               sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
+                pr: "24px", // keep right padding when drawer closed
               }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Content Management System
-            </Typography>
 
-            <IconButton
-              edge="end"
-              color="inherit"
-              aria-label="user account"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-            >
-              <PersonIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              {/* Dropdown menu options */}
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </Menu>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}
+              >
+                Content Management System
+              </Typography>
+
+              {user && (
+                <Typography variant="body1" sx={{ marginRight: "8px" }}>
+                  Welcome, {user.firstName}!
+                </Typography>
+              )}
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="user account"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+              >
+                <PersonIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {/* Dropdown menu options */}
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </Toolbar>
+          </AppBar>
+
+          <Box
+            component="main"
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
+              backgroundColor: (theme) =>
+                theme.palette.mode === "light"
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[900],
+              flexGrow: 1,
+              height: "100vh",
+              overflow: "auto",
+              padding:"10vw"
             }}
           >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          <Grid container spacing={2}>
-            {cards.map((card) => (
-              <Grid item xs={12} md={6} lg={4} key={card.id}>
-                <CourseCard key={card.id} card={card} />
-              </Grid>
-            ))}
-          </Grid>
+            <Toolbar />
+            <Grid container spacing={2} className="grid-container">
+              {card.map((card) => (
+                <Grid
+                  item
+                  xs={12}
+                  md={6}
+                  lg={4}
+                  className="grid-item"
+                >
+                  <CourseCard card={card} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </Box>
-      </Box>
-    </ThemeProvider>
-  );
+      </ThemeProvider>
+    );
+  }
 };

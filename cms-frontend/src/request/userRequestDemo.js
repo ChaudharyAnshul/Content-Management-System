@@ -2,6 +2,7 @@ import { baseURL } from "./baseURL"
 import { storeDataInLocalStorage } from "../util/cache"
 
 import axios from "./axios";
+import { useContext } from "react";
 
 const userURL = "/user"
 
@@ -16,6 +17,7 @@ export const loginRequestDemo = async (loginValues) => {
     })
     console.log(response);
     storeDataInLocalStorage("UserAuth", response?.data)
+
     return response?.data;
    
   } catch (error) {

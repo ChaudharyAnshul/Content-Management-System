@@ -1,0 +1,61 @@
+1. User
+	Id
+	Name
+	Age
+	Address
+	email
+	password - encrypt
+	isAdmin
+	isTeacher
+	isStudent
+	
+
+2. Course
+	Id
+	Name
+	Number
+	professor - FK
+	listStudents - list Fk
+	MaxCountStudent
+	CurrentCountStudent
+	
+
+3. CourseStudentMap - N/A
+	Id
+	StudentId
+	CouseId
+
+
+4. CourseTeacherMap - N/A
+	Id
+	UserID
+	CourseId
+
+
+5. Quiz
+	ID
+	Name
+	CourseID
+	Scores - list <score>
+
+
+6. QuizScore
+    id
+    student - fk
+    score
+
+
+7. QuizQuestion
+	Id
+	Question
+	QuestionType
+	QuizOptions - list of options
+	CorrectAnswer
+	StudentResponse - list Map<String, String>
+	Point
+
+
+8. QuestionAnswer
+    Id
+    Response
+    quizQuestion - fk

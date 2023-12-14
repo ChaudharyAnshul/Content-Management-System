@@ -1,24 +1,27 @@
 import React from "react";
-import { Card, CardMedia, CardContent, Typography } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
-const CourseCard = ({card}) => {
-  const {uniName,collegeName,description,id,image} = card;
+const CourseCard = ({ card }) => {
+  const id = card.number;
+  console.log(1);
+  console.log(card);
   return (
-    
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia component="img" alt={uniName} height="140" image={image} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {uniName}
+          Northeastern Uni
         </Typography>
         <Typography gutterBottom variant="h6" component="div">
-          {collegeName}
+          COE
         </Typography>
-        <Typography gutterBottom variant="body2" component="div">
-          {description}
-        </Typography>
+        <Link to={`/course/${id}`}>
+          <Typography gutterBottom variant="body2" component="div">
+          {card.name}
+          </Typography>
+        </Link>
         <Typography variant="body2" color="text.secondary">
-          {id}
+          {card.number}
         </Typography>
       </CardContent>
     </Card>
