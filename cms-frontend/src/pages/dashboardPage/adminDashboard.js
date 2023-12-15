@@ -214,7 +214,7 @@ export const AdminDashboard = () => {
           </Grid> */}
           {/* Data from Tabs component shows up here */}
           <div className='display-tabs'>
-               <h3 className="admin-title">Welcome To Admin Dashboard</h3>
+               
                {tabContent && (
               <div className="tab-content">
                 {tabContent}
