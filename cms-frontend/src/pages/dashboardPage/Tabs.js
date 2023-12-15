@@ -5,6 +5,7 @@ import "./dashboard.css";
 import { Terms } from "../../components/Term/Terms";
 import { ManageUsers } from "../../components/ManageUsers/ManageUsers";
 import { baseURL } from "../../request/baseURL.js";
+import CourseForm from "../../components/Course/CourseForm.js";
 
 export default function Tabs({ onTabChange }) {
   const BASE_URL = baseURL
@@ -63,7 +64,7 @@ export default function Tabs({ onTabChange }) {
   const toggleCourses = () => {
     setActiveTab("courses");
     console.log("in courses");
-    onTabChange(<div>This is Courses Tab</div>);
+    onTabChange(<CourseForm/>);
   };
 
   const toggleManageUsers = () => {

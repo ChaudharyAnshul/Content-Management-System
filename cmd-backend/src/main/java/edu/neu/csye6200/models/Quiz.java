@@ -29,6 +29,7 @@ public class Quiz {
     @DocumentReference
     private List<QuizScore> quizScores;
     private Boolean isActive;
+    String objId;
 
     public Quiz(String quizName, Course course, Boolean isActive) {
         this.quizName = quizName;

@@ -2,21 +2,35 @@ import { Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { IconButton, TextField, Modal, Box, Typography } from "@mui/material";
 import QuizForm from "./Quiz_Form";
+import { retrieveDataFromLocalStorage } from '../util/cache';
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const QuizTable = ({ quizList }) => {
 
   const [questions, setQuestions] = useState()
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [questionId, setQuestionId] = useState();
+  const auth = retrieveDataFromLocalStorage("UserAuth");
 
-  const buttonClick = (quizQuestions) =>{
+  const buttonClick = (quizQuestions, id) =>{
     setQuestions(quizQuestions);
+    setQuestionId(id);
     setIsModalOpen(true);
-    console.log(quizQuestions);
   } 
 
   const closeModal = () => {
     setIsModalOpen(false);
     setQuestions(null);
+};
+
+const checkButton = (quiz) =>{
+  let temp = false;
+  quiz.quizScores.map((score) =>{
+    if (score.student.email === auth.email){
+      temp = true;
+    }
+  });
+  return temp
 };
 
 const style = {
@@ -44,11 +58,11 @@ const style = {
       </TableHead>
       <TableBody>
         {quizList.map((quiz) => (
-          <TableRow key={quiz.id}>
+          <TableRow key={quiz.id.timestamp}>
             <TableCell>{quiz.quizName}</TableCell>
             <TableCell>{quiz.isActive? 'Yes':"No"}</TableCell>
-            <TableCell>No Due Date</TableCell>
-            <button onClick={()=> buttonClick(quiz.quizQuestions)}>Start Quiz</button>
+            <TableCell>{quiz.id.timestamp}</TableCell>
+            <button onClick={()=> buttonClick(quiz.quizQuestions, quiz.objId)} disabled={checkButton(quiz)}>Start Quiz</button>
           </TableRow>
         ))}
       </TableBody>
@@ -64,7 +78,7 @@ const style = {
                 Quiz
             </Typography>
 
-            <QuizForm quizData ={questions}></QuizForm>
+            <QuizForm quizData ={questions} id={questionId} onClose={closeModal}></QuizForm>
 
 
         </Box>

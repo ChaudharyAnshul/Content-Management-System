@@ -25,6 +25,7 @@ import { Grid } from "@mui/material";
 import { useEffect } from 'react';
 import "./dashboard.js";
 import { getQuiz } from "../../request/courseRequest1.js";
+import { retrieveDataFromLocalStorage } from "../../util/cache";
 
 const drawerWidth = 240;
 
@@ -55,13 +56,24 @@ export const Dashboard = () => {
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [card, setCard] = React.useState();
+  const [isProfessor, setisProfessor] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const a = await getQuiz();
-      setCard(a);
+      const arr = [];
+      a.map((c) =>{
+        if(isCurrentUser(c)){
+          arr.push(c)
+        }
+      setCard(arr);
+      });
     };
     fetchData();
+    const auth = retrieveDataFromLocalStorage("UserAuth");
+    if (auth.userRole === "PROFESSOR"){
+      setisProfessor(true);
+    }
   }, [card]);
 
   const handleLogout = () => {
@@ -72,6 +84,24 @@ export const Dashboard = () => {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const isCurrentUser = (obj) =>{
+    if(isProfessor){
+      if(obj.professor.email === user.email){
+        return true
+      }
+    } else{
+      let temp = false;
+      obj.students.map( (student) =>{
+        if(student.email === user.email){
+          temp = true;
+          return temp;
+        }
+      });
+      return temp;
+    }
+  };
+
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -167,4 +197,5 @@ export const Dashboard = () => {
       </ThemeProvider>
     );
   }
+
 };
