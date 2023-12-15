@@ -7,7 +7,6 @@ import LoginBox from '../../components/LoginModal';
 export const LandingPage = () => {
   return (
     <div className="LandingPage">
-     <Navbar/>
      <LoginBox/>
       {/* <Header /> */}
       {/* Search Bar */}
