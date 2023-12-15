@@ -57,6 +57,7 @@ const Quiz_home = () => {
     }
     const fetchData = async () => {
       const a = await getQuiz({'courseNumber':id});
+      console.log(a);
       setQuizList(a);
     };
     fetchData();
@@ -68,7 +69,7 @@ const Quiz_home = () => {
     <div>
         <h1>Quiz</h1>
         {isProfessor && (
-          <Button onClick={handleOpen2}>Open modal</Button>
+          <Button onClick={handleOpen2}>New Quiz</Button>
         )}
         <QuizTable quizList={quizList}/>
         <TransitionsModal open={open2} handleClose={handleClose2}/>

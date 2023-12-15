@@ -22,6 +22,10 @@ const CourseCard = ({ card }) => {
         </Link>
         <Typography variant="body2" color="text.secondary">
           {card.number}
+          <br />
+          {card.professor.firstName} {card.professor.lastName}
+          <br />
+          {card.professor.email}
         </Typography>
       </CardContent>
     </Card>
