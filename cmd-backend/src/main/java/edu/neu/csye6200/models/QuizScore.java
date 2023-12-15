@@ -17,5 +17,10 @@ public class QuizScore {
     private ObjectId id;
     private double score;
     @DocumentReference
-    private Student student;
+    private User student;
+
+    public QuizScore(double score, User student) {
+        this.score = score;
+        this.student = student;
+    }
 }

@@ -1,13 +1,14 @@
 package edu.neu.csye6200.controller;
 
-import edu.neu.csye6200.models.Course;
-import edu.neu.csye6200.models.Quiz;
-import edu.neu.csye6200.models.User;
+import edu.neu.csye6200.models.*;
 import edu.neu.csye6200.repository.CourseRepository;
 import edu.neu.csye6200.repository.QuizRepository;
+import edu.neu.csye6200.repository.QuizScoreRepository;
+import edu.neu.csye6200.repository.UserRepository;
 import edu.neu.csye6200.request.QuizQuestionsRequest;
 import edu.neu.csye6200.request.QuizRequest;
 import edu.neu.csye6200.service.QuizService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -25,12 +27,16 @@ public class QuizController {
     private final QuizService quizService;
     private final CourseRepository courseRepository;
     private final QuizRepository quizRepository;
+    private final UserRepository userRepository;
+    private final QuizScoreRepository quizScoreRepository;
 
     @Autowired
-    public QuizController(QuizService quizService, CourseRepository courseRepository, QuizRepository quizRepository) {
+    public QuizController(QuizService quizService, CourseRepository courseRepository, QuizRepository quizRepository, UserRepository userRepository, QuizScoreRepository quizScoreRepository) {
         this.quizService = quizService;
         this.courseRepository = courseRepository;
         this.quizRepository = quizRepository;
+        this.userRepository = userRepository;
+        this.quizScoreRepository = quizScoreRepository;
     }
 
     @PostMapping("/create-quiz")
@@ -66,11 +72,38 @@ public class QuizController {
         List<Quiz> quizList = new ArrayList<>();
         for (Quiz quiz : quizs) {
             quiz.setCourse(null);
-            //quiz.setQuizQuestions(null);
+            quiz.setObjId(String.valueOf(quiz.getId()));
             quizList.add(quiz);
         }
 
         ResponseEntity<List<Quiz>> a = new ResponseEntity<List<Quiz>>(quizList, HttpStatus.OK);
         return a;
+    }
+
+
+    @PostMapping("/submit-quiz")
+    public ResponseEntity<String> submitQuiz(@RequestBody Map<String,String> payload){
+        int score = Integer.parseInt(payload.get("score"));
+        String id = payload.get("id");
+        String email = payload.get("email");
+
+        ObjectId objectId = new ObjectId(id);
+
+
+        User student = userRepository.findByEmail(email);
+
+        QuizScore quizScore = new QuizScore((double) score, student);
+
+        quizScoreRepository.save(quizScore);
+
+        Quiz quiz;
+        Optional<Quiz> quizOpt = quizRepository.findById(objectId);
+        if (quizOpt.isPresent()) {
+            quiz = quizOpt.get();
+            quiz.addScores(quizScore);
+            quizRepository.save(quiz);
+        }
+
+        return new ResponseEntity<String>("Quiz Saved", HttpStatus.OK);
     }
 }

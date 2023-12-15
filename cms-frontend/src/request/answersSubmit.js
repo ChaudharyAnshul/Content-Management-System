@@ -1,11 +1,10 @@
 import { baseURL } from "./baseURL"
-import { storeDataInLocalStorage } from "../util/cache"
 
-const userURL = baseURL + "/user"
+const userURL = baseURL + "/quiz"
 
 export const AnswersSubmit = async (dataAnswers) => {
   try {
-    const response = await fetch(userURL+"/answersubmit", {
+    const response = await fetch(userURL+"/submit-quiz", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -13,16 +12,13 @@ export const AnswersSubmit = async (dataAnswers) => {
       body: JSON.stringify(dataAnswers),
     });
     if (response.ok) {
-      const data = await response.json();
-      
+      alert("Quiz Saved!");
     } else {
       console.error('Error:', response.status);
-      // handleOpenErrorModal("Server Error")
       return false
     }
   } catch (error) {
     console.error('Error:', error);
-    // handleOpenErrorModal("Network Error")
     return false
   }
 };
