@@ -1,85 +1,50 @@
-import React from 'react';
-import {
-    MDBFooter,
-    MDBContainer,
-    MDBCol,
-    MDBRow
-} from 'mdb-react-ui-kit';
-import { FaTwitter, FaInstagram, FaFacebook, FaYoutube } from 'react-icons/fa'
-
-
+import React from "react";
+import { MDBFooter, MDBContainer, MDBCol, MDBRow } from "mdb-react-ui-kit";
+import { FaTwitter, FaInstagram, FaFacebook, FaYoutube } from "react-icons/fa";
+import "./Footer.css"
 export default function App() {
-    return (
-        <MDBFooter bgColor='light' className='text-center text-lg-left footer-container'>
-            <MDBContainer className='p-4'>
-                <MDBRow>
-                    <MDBCol lg='6' md='12' className='mb-4 mb-md-0'>
-                        <h5 className='text-uppercase'>Developers</h5>
 
-                        <p>
-                            <ul className='flex-container'>
-                                <div className='dev1 flex-container'>
-                                    <ul>
-                                        <li>Anshul Chaudhary</li>
-                                        <li>Deepansh Chaturvedi</li>
-                                        <li>Narayani Patil</li>
-                                        <li>Kartikey Hebbar</li>
-                                    </ul>
-                                </div>
-                                <div className='dev2 flex-container'>
-                                    <ul>
-                                        <li>Aaryan Praveen</li>
-                                        <li>Jilson Correia</li>
-                                        <li>Kartik Shanbhag</li>
-
-                                    </ul>
-                                </div>
-
-                            </ul>
-                        </p>
-                    </MDBCol>
-
-                    <MDBCol lg='6' md='12' className='mb-4 mb-md-0'>
-                        <h5 className='text-uppercase'>Connect with us:</h5>
-
-                        <p>
-
-                            {/* <h6>Facebook</h6>
-                                <h6>Twitter</h6>
-                                <h6>Youtube</h6>
-                                <h6>Instagram</h6>
-                             */}
-                            <div className='flex-container connect'>
-
-                                <ul className='icons'>
-                                    <li><FaTwitter className='icon' /></li>
-                                    <li><FaInstagram className='icon' /></li>
-                                    <li><FaFacebook className='icon' /></li>
-                                    <li><FaYoutube className='icon' /></li>
-                                </ul>
-
-
-                                <ul className='social'>
-                                    <h6>Twitter</h6>
-                                    <h6>Instagram</h6>
-                                    <h6>Facebook</h6>
-                                    <h6>Youtube</h6>
-                                </ul>
-
-                            </div>
-
-
-                        </p>
-                    </MDBCol>
-                </MDBRow>
-            </MDBContainer>
-
-            {/* <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
-        &copy; {new Date().getFullYear()} Copyright:{' '}
-        <a className='text-dark' href='https://mdbootstrap.com/'>
-          MDBootstrap.com
-        </a>
-      </div> */}
-        </MDBFooter>
-    );
+  return (
+    <>
+      <footer class="footer">
+        <div class="developer-credits">
+          <h3>DEVELOPERS</h3>
+          <ul>
+            <li>Anshul Chaudhary</li>
+            <li>Deepansh Chaturvedi</li>
+            <li>Narayani Patil</li>
+            <li>Kartikey Hebbar</li>
+            <li>Aaryan Praveen</li>
+            <li>Jilson Correia</li>
+            <li>Kartik Shanbhag</li>
+          </ul>
+        </div>
+        <div class="social-connect">
+          <h3>CONNECT WITH US:</h3>
+          <ul>
+            <li>
+              <a href="https://twitter.com/your_twitter_handle">
+                <i class="fa fa-twitter"></i> Twitter
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/your_instagram_handle">
+                <i class="fa fa-instagram"></i> Instagram
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/your_facebook_page">
+                <i class="fa fa-facebook"></i> Facebook
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/your_youtube_channel">
+                <i class="fa fa-youtube"></i> Youtube
+              </a>
+            </li>
+          </ul>
+        </div>
+      </footer>
+    </>
+  );
 }
