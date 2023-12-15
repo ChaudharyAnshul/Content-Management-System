@@ -11,27 +11,6 @@ export default function Tabs({ onTabChange }) {
   const BASE_URL = baseURL
   const [activeTab, setActiveTab] = useState("terms");
 
-  const handleTermCreation = (termName, termType) => {
-    console.log(termName, " ", termType);
-    // try {
-    //   const response = await fetch('', {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(''),
-    //   });
-
-    //   if (response.ok) {
-    //     console.log("Term created successfully");
-    //   } else {
-    //     console.error("Error creating term:", response.statusText);
-    //   }
-    // } catch (error) {
-    //   console.error("Error:", error.message);
-    // }
-  }
-
   const handleStudentCreation = async (file) => {
     const formData = new FormData();
     formData.append('file', file)
