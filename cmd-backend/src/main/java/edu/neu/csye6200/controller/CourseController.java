@@ -36,6 +36,7 @@ public class CourseController {
         this.termRepository = termRepository;
     }
 
+    // API call to create a course object
     @PostMapping("/create-course")
     public ResponseEntity<String> addCourse(@RequestBody CourseRequest courseRequest) {
         try {
@@ -67,6 +68,7 @@ public class CourseController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    // API To Populate a created course with a list of students
     @PostMapping("/create-course/{courseNumber}")
     public ResponseEntity<String> generateStudentListFromEmails(@PathVariable int courseNumber, @ModelAttribute MultipartFile csvFile) {
         try {

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./CourseForm.css";
+import { baseURL } from "../../request/baseURL.js";
+
 const CourseForm = () => {
+  const BASE_URL = baseURL
   const [courseName, setCourseName] = useState("");
   const [courseNumber, setCourseNumber] = useState("");
   const [term, setTerm] = useState("");
@@ -32,16 +35,9 @@ const CourseForm = () => {
     }
   };
 
-  const handleSubmitForCreateCourse = (event) => {
+  const handleSubmitForCreateCourse = async (event) => {
     event.preventDefault();
     // Implement logic to submit the form data (e.g., API call)
-    console.log({
-      courseName,
-      courseNumber,
-      term,
-      professorEmail,
-      maxCount,
-    });
     const formData = {
       courseName,
       courseNumber,
@@ -49,6 +45,26 @@ const CourseForm = () => {
       professorEmail,
       maxCount,
     };
+    // Call Course Creation API
+    try {
+      const response = await fetch(BASE_URL+'/course/create-course', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        console.log("Course created successfully");
+        alert('Course created successfully 😊')
+      } else {
+        console.error("Error creating Course:", response.statusText);
+        alert('Error creating Course 😨')
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
     // Reset form fields
     setCourseName("");
     setCourseNumber("");
@@ -65,19 +81,35 @@ const CourseForm = () => {
     }
   };
 
-  const handleSubmitStudentCSV = (event) => {
+  const handleSubmitStudentCSV = async (event) => {
     event.preventDefault();
     // Implement logic to submit form data (e.g., API call)
     if (!courseNumber || !selectedFile) {
       setErrorMessage("Please enter the course number and upload a CSV file.");
       return;
     }
-    // Process selected file (e.g., read data and prepare request payload)
-    console.log({ courseNumber, selectedFile });
-    const formData = {
-      courseNumber,
-      selectedFile: selectedFile, // Store file name instead of entire object
-    };
+    // REST API Calls
+    console.log('Course selected ', courseNumber);
+    console.log('selected file: ', selectedFile);
+    // creating and populating Form Data
+    const formData = new FormData();
+    formData.append('csvFile', selectedFile)
+    try {
+      const response = await fetch(BASE_URL+'/course/create-course/'+courseNumber, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log("Students added successfully");
+        alert('Students added successfully 😊')
+      } else {
+        console.error("Error adding Students:", response.statusText);
+        alert('Error adding Students 😨')
+      }
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
     // Reset form fields
     setCourseNumber("");
     setSelectedFile(null);
@@ -95,16 +127,18 @@ const CourseForm = () => {
           name="courseName"
           value={courseName}
           onChange={handleChange}
+          placeholder="Enter course name"
           required
         />
 
         <label htmlFor="courseNumber">Course Number:</label>
         <input
-          type="number"
+          type="text"
           id="courseNumber"
           name="courseNumber"
           value={courseNumber}
           onChange={handleChange}
+          placeholder="Course Number must be a Number"
           required
         />
 
@@ -115,6 +149,7 @@ const CourseForm = () => {
           name="term"
           value={term}
           onChange={handleChange}
+          placeholder="Must be an existing term (For example: Spring2023)"
           required
         />
 
@@ -125,16 +160,18 @@ const CourseForm = () => {
           name="professorEmail"
           value={professorEmail}
           onChange={handleChange}
+          placeholder="Enter Professor Email"
           required
         />
 
         <label htmlFor="maxCount">Maximum Enrollment Count:</label>
         <input
-          type="number"
+          type="text"
           id="maxCount"
           name="maxCount"
           value={maxCount}
           onChange={handleChange}
+          placeholder="Maximum class strength for this course (must be a number)"
           required
         />
 
@@ -144,11 +181,12 @@ const CourseForm = () => {
       <form onSubmit={handleSubmitStudentCSV}>
         <label htmlFor="courseNumber">Course Number:</label>
         <input
-          type="number"
+          type="text"
           id="courseNumber"
           name="courseNumber"
           value={courseNumber}
           onChange={handleChangeNumber}
+          placeholder="Course Number must be an existing Course Number"
           required
         />
 
