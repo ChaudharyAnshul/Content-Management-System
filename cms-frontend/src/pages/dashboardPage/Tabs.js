@@ -24,10 +24,10 @@ export default function Tabs({ onTabChange }) {
       if (fileUploadResponse.ok) {
         console.log("File processed: ", file.name);
         // const response = await fileUploadResponse.json();
-        alert('Student(s) created successfully!')
+        alert('Student(s) created successfully!😊')
       } else {
         console.log("Error occurred in file upload!");
-        alert("Error occurred in file upload!");
+        alert("Error occurred in file upload!😨");
       }
     } catch (error) {
       console.log(error);
@@ -37,7 +37,7 @@ export default function Tabs({ onTabChange }) {
   const toggleTerms = () => {
     setActiveTab("terms");
     console.log("in Terms");
-    onTabChange(<Terms />);
+    onTabChange(<Terms/>);
   };
 
   const toggleCourses = () => {

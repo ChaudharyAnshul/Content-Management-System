@@ -27,7 +27,7 @@ public class TermController {
     public ResponseEntity<String> addTerm(@RequestBody TermRequest termRequest) {
         try {
             String termName = termRequest.getTermName();
-            TermType termType = termRequest.getTermType();
+            String termType = termRequest.getTermType().name();
             // create term object
             Term term = termService.createTerm(termName, termType);
             // save object to mongoDB
