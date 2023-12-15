@@ -19,9 +19,9 @@ public class Term {
     private ObjectId id;
     @Indexed(unique = true)
     private String termName;
-    private TermType termType;
+    private String termType;
 
-    public Term(String termName, TermType termType) {
+    public Term(String termName, String termType) {
         this.termName = termName;
         this.termType = termType;
     }

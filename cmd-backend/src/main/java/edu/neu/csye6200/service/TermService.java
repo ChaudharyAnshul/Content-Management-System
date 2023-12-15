@@ -12,7 +12,7 @@ public class TermService {
     @Autowired
     private TermRepository termRepository;
 
-    public Term createTerm(String termName, TermType termType) {
+    public Term createTerm(String termName, String termType) {
         return new Term(termName, termType);
     }
 
