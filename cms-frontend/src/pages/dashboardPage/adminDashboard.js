@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -23,6 +23,7 @@ import { cards } from "../../json/sampleData";
 import CourseCard from "../../components/CourseCard";
 import { Grid } from "@mui/material";
 import Tabs from "./Tabs";
+import { Terms } from "../../components/Term/Terms";
 
 const drawerWidth = 240;
 
@@ -78,6 +79,13 @@ export const AdminDashboard = () => {
   const { auth: user, setAuth } = useAuth();
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  // handle Tab content - default is terms content
+  const [tabContent, setTabContent] = useState(<Terms/>);
+
+  const handleTabChange = (content) => {
+    setTabContent(content);
+  }
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -180,7 +188,7 @@ export const AdminDashboard = () => {
           </Toolbar>
           <Divider />
 
-          <Tabs />
+          <Tabs onTabChange={handleTabChange} />
 
         </Drawer>
         <Box
@@ -204,9 +212,14 @@ export const AdminDashboard = () => {
               </Grid>
             ))}
           </Grid> */}
-          <div>
+          {/* Data from Tabs component shows up here */}
+          <div className='display-tabs'>
                <h3 className="admin-title">Welcome To Admin Dashboard</h3>
-               
+               {tabContent && (
+              <div className="tab-content">
+                {tabContent}
+              </div>
+               )}
           </div>
 
 
