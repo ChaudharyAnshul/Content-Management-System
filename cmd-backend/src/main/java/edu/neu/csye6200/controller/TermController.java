@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/term")
 public class TermController {
@@ -39,6 +41,11 @@ public class TermController {
     @GetMapping("/{termName}")
     public Term getTermByName(@PathVariable String termName) {
         return termRepository.findByTermName(termName);
+    }
+
+    @GetMapping("/all")
+    public List<Term> getAllTerms() {
+        return termRepository.findAll();
     }
 
 }

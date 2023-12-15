@@ -1,33 +1,69 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaIcons } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import './dashboard.css'; 
+import "./dashboard.css";
+import { Terms } from "../../components/Term/Terms";
+import { ManageUsers } from "../../components/ManageUsers/ManageUsers";
+import { baseURL } from "../../request/baseURL.js";
 
-export default function Tabs() {
+export default function Tabs({ onTabChange }) {
+  const BASE_URL = baseURL
+  const [activeTab, setActiveTab] = useState("terms");
 
-  const termForm=()=>{
+  const handleStudentCreation = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file)
+    console.log("File selected:", file.name);
+    // TODO: Call backend API to upload and process this file to DB
+    try {
+      const fileUploadResponse = await fetch(BASE_URL + "/user/createUsers", {
+        method: 'POST',
+        body: formData,
+      });
+      if (fileUploadResponse.ok) {
+        console.log("File processed: ", file.name);
+        // const response = await fileUploadResponse.json();
+        alert('Student(s) created successfully!')
+      } else {
+        console.log("Error occurred in file upload!");
+        alert("Error occurred in file upload!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  }
+  const toggleTerms = () => {
+    setActiveTab("terms");
+    console.log("in Terms");
+    onTabChange(<Terms />);
+  };
 
-  const courseForm=()=>{
-    
-  }
+  const toggleCourses = () => {
+    setActiveTab("courses");
+    console.log("in courses");
+    onTabChange(<div>This is Courses Tab</div>);
+  };
 
-  const manageUser=()=>{
-    
-  }
-
+  const toggleManageUsers = () => {
+    setActiveTab("manageusers");
+    console.log("in manage users");
+    onTabChange(<ManageUsers onFileUpload={handleStudentCreation} />);
+  };
 
   return (
     <>
       <div className="nav-tabs">
-        <a href="" onClick={()=>termForm()}><h4>Term</h4></a>
-        <a href="" onClick={()=>courseForm()}><h4>Courses</h4></a>
-        <a href="" onClick={()=>manageUser()}><h4>Manage Users</h4></a>
+        <h4 style={{ cursor: "pointer" }} onClick={() => toggleTerms()}>
+          Term
+        </h4>
+        <h4 style={{ cursor: "pointer" }} onClick={() => toggleCourses()}>
+          Courses
+        </h4>
+        <h4 style={{ cursor: "pointer" }} onClick={() => toggleManageUsers()}>
+          Manage Users
+        </h4>
       </div>
-
     </>
-
-
-  )
+  );
 }
